@@ -25,15 +25,14 @@ sub diagonal-words( @grid-chars,  $up-to-down = True, $left-to-right = True ) {
                 $column += $column-increment;
             }
 
-            @diagonals.push: @word.join, @word.join.flip;
+            @diagonals.push: @word.join, @word.join.flip if @word.chars > 2;
             $last-column += $column-increment;
             ($row, $column) = $last-row, $last-column;
         }
 
     }
 
-    @diagonals.grep( *.chars > 2 );
-
+    @diagonals;
 }
 
 
@@ -59,14 +58,17 @@ sub MAIN( $grid-file-name = 'grid.txt',
     }
 
 
-    @diagonals.push: diagonal-words( @grid-chars, True, True );
-    @diagonals.push: diagonal-words( @grid-chars, True, False );
-    @diagonals.push: diagonal-words( @grid-chars, False, True );
-    @diagonals.push: diagonal-words( @grid-chars, False, False );
+    @diagonals.push:  diagonal-words( @grid-chars, True, True );
+    @diagonals.push:  diagonal-words( @grid-chars, True, False );
+    @diagonals.push:  diagonal-words( @grid-chars, False, True );
+    @diagonals.push:  diagonal-words( @grid-chars, False, False );
 
 
     for $word-file-name.IO.lines  {
         next if .chars < $min-length;
+        next if / \' / ;
+        next if / ^ <[A .. Z]> <[a .. z]>+ $ /;
+
         my $current-word = $_.lc;
         @found-words.push: $current-word if ( @diagonals.grep( * ~~ / $current-word / )
                                               || @horizontals.grep( * ~~ / $current-word / )
