@@ -51,16 +51,27 @@ public class Task1 {
     public static final int task1_pljava( int[] nums ) throws SQLException {
 	logger.log( Level.INFO, "Entering pwc262.task1_pljava" );
 
-	int positives = 0;
-	int negatives = 0;
+	// int positives = 0;
+	// int negatives = 0;
 
-	for ( int current : nums )
-	    if ( current >= 0 )
-		positives++;
-	    else
-		negatives++;
+	// for ( int current : nums )
+	//     if ( current >= 0 )
+	// 	positives++;
+	//     else
+	// 	negatives++;
 
-	return positives >= negatives ? positives : negatives;
+	// return positives >= negatives ? positives : negatives;
+
+
+	final int[] results = new int[]{ 0, 0 };
+
+	Arrays.stream( nums )
+	    .forEach( current -> {
+		    int index = current >= 0 ? 0 : 1;
+		    results[ index ]++;
+		} );
+
+	return results[ 0 ] >= results[ 1 ] ? results[ 0 ] : results[ 1 ];
 
     }
 }

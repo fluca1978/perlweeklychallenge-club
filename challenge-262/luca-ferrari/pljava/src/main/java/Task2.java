@@ -48,19 +48,34 @@ public class Task2 {
     @Function( schema = "pwc262",
 	       onNullInput = RETURNS_NULL,
 	       effects = IMMUTABLE )
-    public static final int task2_pljava( int k, int[] nums ) throws SQLException {
+    public static final int task2_pljava( final int k, final int[] nums ) throws SQLException {
 	logger.log( Level.INFO, "Entering pwc262.task2_pljava" );
 
-	int pairs = 0;
-	for ( int i = 0; i < nums.length; i++ )
-	    for ( int j = i + 1; j < nums.length; j++ )
-		if ( nums[ i ] != nums[ j ]
-		     || ( i * j ) % k != 0 )
-		    continue;
-		else
-		    pairs++;
+	// int pairs = 0;
+	// for ( int i = 0; i < nums.length; i++ )
+	//     for ( int j = i + 1; j < nums.length; j++ )
+	// 	if ( nums[ i ] != nums[ j ]
+	// 	     || ( i * j ) % k != 0 )
+	// 	    continue;
+	// 	else
+	// 	    pairs++;
 
-	return pairs;
+	// return pairs;
+
+
+	final int pairs[] = new int[]{ 0 };
+	IntStream.range( 0, nums.length )
+	    .forEach( i -> {
+		    IntStream.range( i + 1, nums.length )
+			.forEach( j -> {
+				if ( nums[ i ] == nums[ j ]
+				     && ( i * j ) % k == 0 )
+				    pairs[ 0 ]++;
+			    } );
+		} );
+
+
+	return pairs[ 0 ];
 
     }
 }
